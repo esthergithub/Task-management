@@ -1,0 +1,2027 @@
+  [1m[35m (2.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (42.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (69.0ms)[0m  [1m[35mDROP DATABASE IF EXISTS "everyleaf_development"[0m
+  [1m[35m (87.0ms)[0m  [1m[35mDROP DATABASE IF EXISTS "everyleaf_test"[0m
+  [1m[35m (388.5ms)[0m  [1m[35mCREATE DATABASE "everyleaf_development" ENCODING = 'unicode'[0m
+  [1m[35m (226.5ms)[0m  [1m[35mCREATE DATABASE "everyleaf_test" ENCODING = 'unicode'[0m
+  [1m[35m (9.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (5.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7095887480198095845)[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateTasks (20201216044900)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (44.9ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" bigserial primary key, "title" character varying, "content" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (6.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20201216044900"]]
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeColumnNullTasks (20201216045021)
+  [1m[36mTRANSACTION (25.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "tasks" ALTER COLUMN "title" TYPE character varying, ALTER COLUMN "title" SET NOT NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20201216045021"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddDeadlineToTasks (20210108074827)
+  [1m[36mTRANSACTION (6.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.6ms)[0m  [1m[35mALTER TABLE "tasks" ADD "deadline" date[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210108074827"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddStatusToTasks (20210108085012)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.4ms)[0m  [1m[35mALTER TABLE "tasks" ADD "status" character varying[0m
+  [1m[36mActiveRecord::SchemaMigration Create (5.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210108085012"]]
+  [1m[36mTRANSACTION (29.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddPriorityToTasks (20210112021521)
+  [1m[36mTRANSACTION (2.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.0ms)[0m  [1m[35mALTER TABLE "tasks" ADD "priority" character varying[0m
+  [1m[36mActiveRecord::SchemaMigration Create (5.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210112021521"]]
+  [1m[36mTRANSACTION (24.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddSearchIndexToTask (20210113014132)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.5ms)[0m  [1m[35mALTER TABLE "tasks" ADD "search" character varying[0m
+  [1m[35m (43.5ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_search" ON "tasks" ("search")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210113014132"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateUsers (20210114015815)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (27.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "name" character varying, "email" character varying, "password_digest" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (1.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210114015815"]]
+  [1m[36mTRANSACTION (2.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddIndexToUsersEmail (20210114020047)
+  [1m[36mTRANSACTION (48.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210114020047"]]
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddUserRefToTasks (20210114032702)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (23.0ms)[0m  [1m[35mALTER TABLE "tasks" ADD "user_id" bigint[0m
+  [1m[35m (6.8ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_user_id" ON "tasks" ("user_id")[0m
+  [1m[35m (13.4ms)[0m  [1m[35mALTER TABLE "tasks" ADD CONSTRAINT "fk_rails_4d2a9e4d7e"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210114032702"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddAdminToUsers (20210114052237)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (42.0ms)[0m  [1m[35mALTER TABLE "users" ADD "admin" boolean DEFAULT FALSE[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210114052237"]]
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (3.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2021-07-02 14:48:29.740408"], ["updated_at", "2021-07-02 14:48:29.740408"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT pg_advisory_unlock(7095887480198095845)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for ::1 at 2021-07-02 14:50:41 +0300
+  [1m[35m (2.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (123.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+Started GET "/" for ::1 at 2021-07-02 14:50:45 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (516.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 28264.1ms | Allocations: 2232824)
+  Rendered users/_register.html.erb (Duration: 36316.0ms | Allocations: 2434916)
+  Rendered users/new.html.erb within layouts/application (Duration: 28270.3ms | Allocations: 2233352)
+  Rendered users/new.html.erb within layouts/application (Duration: 36407.9ms | Allocations: 2435757)
+  Rendered layout layouts/application.html.erb (Duration: 37122.4ms | Allocations: 2935683)
+  Rendered layout layouts/application.html.erb (Duration: 29313.7ms | Allocations: 2734722)
+Completed 500 Internal Server Error in 37530ms (ActiveRecord: 295.2ms | Allocations: 2948021)
+
+
+Completed 500 Internal Server Error in 33928ms (ActiveRecord: 2690.4ms | Allocations: 2810762)
+
+
+  
+ActionView::Template::Error (couldn't find file 'bootstrap/dist/css/bootstrap.min' with type 'text/css'
+Checked in these paths: 
+  /Users/harakenken22/Desktop/Everyleaf 4/app/assets/config
+  /Users/harakenken22/Desktop/Everyleaf 4/app/assets/images
+  /Users/harakenken22/Desktop/Everyleaf 4/app/assets/javascripts
+  /Users/harakenken22/Desktop/Everyleaf 4/app/assets/stylesheets
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/coffee-rails-4.2.2/lib/assets/javascripts
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/actioncable-6.1.3.2/app/assets/javascripts
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/activestorage-6.1.3.2/app/assets/javascripts
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/actionview-6.1.3.2/lib/assets/compiled
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/turbolinks-source-5.2.0/lib/assets/javascripts
+  /Users/harakenken22/Desktop/Everyleaf 4/node_modules):
+     6:     <%= csp_meta_tag %>
+     7:     <meta name="viewport" content="width=device-width">
+     8:     <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" %>
+     9:     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    10:     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    11:   </head>
+    12: 
+  
+app/assets/stylesheets/application.css:13
+app/views/layouts/application.html.erb:9
+  
+ActionView::Template::Error (couldn't find file 'bootstrap/dist/css/bootstrap.min' with type 'text/css'
+Checked in these paths: 
+  /Users/harakenken22/Desktop/Everyleaf 4/app/assets/config
+  /Users/harakenken22/Desktop/Everyleaf 4/app/assets/images
+  /Users/harakenken22/Desktop/Everyleaf 4/app/assets/javascripts
+  /Users/harakenken22/Desktop/Everyleaf 4/app/assets/stylesheets
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/coffee-rails-4.2.2/lib/assets/javascripts
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/actioncable-6.1.3.2/app/assets/javascripts
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/activestorage-6.1.3.2/app/assets/javascripts
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/actionview-6.1.3.2/lib/assets/compiled
+  /Users/harakenken22/.rvm/gems/ruby-3.0.0/gems/turbolinks-source-5.2.0/lib/assets/javascripts
+  /Users/harakenken22/Desktop/Everyleaf 4/node_modules):
+     6:     <%= csp_meta_tag %>
+     7:     <meta name="viewport" content="width=device-width">
+     8:     <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" %>
+     9:     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    10:     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    11:   </head>
+    12: 
+  
+app/assets/stylesheets/application.css:13
+app/views/layouts/application.html.erb:9
+Started GET "/" for ::1 at 2021-07-02 14:52:34 +0300
+  [1m[35m (122.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (123.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 9291.8ms | Allocations: 327859)
+  Rendered users/new.html.erb within layouts/application (Duration: 9342.3ms | Allocations: 328529)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 11848.2ms | Allocations: 698987)
+Completed 200 OK in 12773ms (Views: 12057.8ms | ActiveRecord: 374.8ms | Allocations: 710038)
+
+
+Started GET "/users/new" for ::1 at 2021-07-02 14:53:03 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 4.7ms | Allocations: 461)
+  Rendered users/new.html.erb within layouts/application (Duration: 5.5ms | Allocations: 544)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 115.5ms | Allocations: 28270)
+Completed 200 OK in 127ms (Views: 117.0ms | ActiveRecord: 0.6ms | Allocations: 29862)
+
+
+Started GET "/users/new" for ::1 at 2021-07-02 14:53:08 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 1.8ms | Allocations: 461)
+  Rendered users/new.html.erb within layouts/application (Duration: 2.2ms | Allocations: 544)
+  [1m[36mCACHE User Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 168.2ms | Allocations: 28248)
+Completed 200 OK in 195ms (Views: 177.8ms | ActiveRecord: 0.4ms | Allocations: 29814)
+
+
+Started GET "/users/new" for ::1 at 2021-07-02 14:53:10 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 1.5ms | Allocations: 461)
+  Rendered users/new.html.erb within layouts/application (Duration: 3.1ms | Allocations: 544)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 100.1ms | Allocations: 28267)
+Completed 200 OK in 112ms (Views: 102.1ms | ActiveRecord: 0.7ms | Allocations: 29842)
+
+
+Started POST "/users" for ::1 at 2021-07-02 14:53:25 +0300
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"IG0iVJ7gcqn4PGNbKs9ftU7Fj/+FgjEjO1o5KUuDb2UaPiV6bs4jXur2I4RaEGq6zt9ec4rXk62oX9lNQGXmwQ==", "user"=>{"name"=>"Ess", "email"=>"esther.mugo@africascan.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Create User"}
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:16:in `create'
+  [1m[36mUser Create (63.3ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "Ess"], ["email", "esther.mugo@africascan.com"], ["password_digest", "$2a$12$IoLPupyg6tyDH4qzR32vu.s9iGQry/6rm7rdLcIjF58VBoy6cjYiK"], ["created_at", "2021-07-02 14:53:25.504523"], ["updated_at", "2021-07-02 14:53:25.504523"]]
+  ↳ app/controllers/users_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (1.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:16:in `create'
+Redirected to http://localhost:3000/users/1
+Completed 302 Found in 437ms (ActiveRecord: 65.5ms | Allocations: 3598)
+
+
+Started GET "/users/1" for ::1 at 2021-07-02 14:53:25 +0300
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:48:in `set_user'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:25:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering users/show.html.erb within layouts/application
+  Rendered users/show.html.erb within layouts/application (Duration: 3.6ms | Allocations: 200)
+  Rendered layout layouts/application.html.erb (Duration: 1557.4ms | Allocations: 27475)
+Completed 200 OK in 1570ms (Views: 1558.4ms | ActiveRecord: 0.7ms | Allocations: 30174)
+
+
+Started GET "/tasks.1" for ::1 at 2021-07-02 14:54:03 +0300
+Processing by TasksController#index as */*
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (207.3ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  Rendered tasks/index.html.erb within layouts/application (Duration: 325.8ms | Allocations: 4663)
+  Rendered layout layouts/application.html.erb (Duration: 434.0ms | Allocations: 31965)
+Completed 200 OK in 750ms (Views: 230.6ms | ActiveRecord: 217.9ms | Allocations: 40140)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 14:54:12 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 59.9ms | Allocations: 2851)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 102.0ms | Allocations: 3168)
+  Rendered layout layouts/application.html.erb (Duration: 182.6ms | Allocations: 30380)
+Completed 200 OK in 207ms (Views: 183.5ms | ActiveRecord: 4.4ms | Allocations: 35907)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 14:54:26 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"yOixRjBFFRiIwweqM8SZLzUQinGgWuNpL8IepNjJjgvQJWvaHozHAu9LmAlr5JB7cfL/buDabVlarxSmIkKCyg==", "task"=>{"title"=>"Math", "content"=>"Hi", "deadline"=>"2021-07-17", "status"=>"Not started", "priority"=>"High"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTask Create (329.0ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Math"], ["content", "Hi"], ["created_at", "2021-07-02 14:54:27.012190"], ["updated_at", "2021-07-02 14:54:27.012190"], ["deadline", "2021-07-17"], ["status", "Not started"], ["priority", "High"], ["user_id", 1]]
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTRANSACTION (43.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+Redirected to http://localhost:3000/tasks/1
+Completed 302 Found in 407ms (ActiveRecord: 373.4ms | Allocations: 3472)
+
+
+Started GET "/tasks/1" for ::1 at 2021-07-02 14:54:27 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 1], ["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:84:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 43.4ms | Allocations: 321)
+  Rendered layout layouts/application.html.erb (Duration: 153.8ms | Allocations: 27546)
+Completed 200 OK in 263ms (Views: 154.7ms | ActiveRecord: 0.9ms | Allocations: 31411)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 14:54:31 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (137.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (12.2ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  Rendered tasks/index.html.erb within layouts/application (Duration: 20.7ms | Allocations: 1935)
+  Rendered layout layouts/application.html.erb (Duration: 141.0ms | Allocations: 29196)
+Completed 200 OK in 309ms (Views: 129.7ms | ActiveRecord: 149.4ms | Allocations: 31023)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 14:54:36 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 7.1ms | Allocations: 1260)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 9.7ms | Allocations: 1340)
+  Rendered layout layouts/application.html.erb (Duration: 324.0ms | Allocations: 28594)
+Completed 200 OK in 336ms (Views: 325.2ms | ActiveRecord: 1.1ms | Allocations: 30043)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 14:54:53 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"Mc6kLe77iR1uofjgvw/Q4D7Deo09t1TdOMX6HtKfyjQpA36xwDJbBwkpZ0PnL9m0eiEPkn032u1NqPAcKBTG9Q==", "task"=>{"title"=>"English", "content"=>"Hello World", "deadline"=>"2021-07-04", "status"=>"In progress", "priority"=>"Middle"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTask Create (1.2ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "English"], ["content", "Hello World"], ["created_at", "2021-07-02 14:54:53.572826"], ["updated_at", "2021-07-02 14:54:53.572826"], ["deadline", "2021-07-04"], ["status", "In progress"], ["priority", "Middle"], ["user_id", 1]]
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTRANSACTION (40.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+Redirected to http://localhost:3000/tasks/2
+Completed 302 Found in 72ms (ActiveRecord: 43.5ms | Allocations: 3205)
+
+
+Started GET "/tasks/2" for ::1 at 2021-07-02 14:54:53 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 1], ["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:84:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 0.5ms | Allocations: 91)
+  Rendered layout layouts/application.html.erb (Duration: 1091.6ms | Allocations: 27323)
+Completed 200 OK in 1103ms (Views: 1093.3ms | ActiveRecord: 0.7ms | Allocations: 29531)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 14:54:56 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (1.4ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 640.7ms | Allocations: 5164)
+  Rendered layout layouts/application.html.erb (Duration: 710.8ms | Allocations: 32396)
+Completed 200 OK in 725ms (Views: 710.3ms | ActiveRecord: 2.4ms | Allocations: 34105)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 14:54:59 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 3.0ms | Allocations: 1260)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 3.3ms | Allocations: 1340)
+  Rendered layout layouts/application.html.erb (Duration: 211.4ms | Allocations: 28553)
+Completed 200 OK in 292ms (Views: 212.2ms | ActiveRecord: 1.3ms | Allocations: 30004)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 14:55:12 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"+bEVp45PiLSjhfiuvFdTCy5Bgr15Yy16SgRm28GHGSLhfM87oIZarsQNZw3kd1pfaqP3ojnjo0o/aWzZOwwV4w==", "task"=>{"title"=>"Swahili", "content"=>"Jambo", "deadline"=>"2021-07-03", "status"=>"Complete", "priority"=>"Low"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (3.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTask Create (0.8ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Swahili"], ["content", "Jambo"], ["created_at", "2021-07-02 14:55:12.613977"], ["updated_at", "2021-07-02 14:55:12.613977"], ["deadline", "2021-07-03"], ["status", "Complete"], ["priority", "Low"], ["user_id", 1]]
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTRANSACTION (40.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+Redirected to http://localhost:3000/tasks/3
+Completed 302 Found in 61ms (ActiveRecord: 45.0ms | Allocations: 3206)
+
+
+Started GET "/tasks/3" for ::1 at 2021-07-02 14:55:12 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 1], ["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:84:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 0.3ms | Allocations: 91)
+  Rendered layout layouts/application.html.erb (Duration: 86.2ms | Allocations: 27334)
+Completed 200 OK in 95ms (Views: 87.0ms | ActiveRecord: 0.7ms | Allocations: 29532)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 14:55:14 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (5.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.5ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 19.8ms | Allocations: 4636)
+  Rendered layout layouts/application.html.erb (Duration: 83.8ms | Allocations: 31896)
+Completed 200 OK in 102ms (Views: 84.5ms | ActiveRecord: 5.9ms | Allocations: 33603)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 14:55:17 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 6.5ms | Allocations: 1260)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 6.9ms | Allocations: 1340)
+  Rendered layout layouts/application.html.erb (Duration: 66.1ms | Allocations: 28594)
+Completed 200 OK in 74ms (Views: 67.2ms | ActiveRecord: 0.6ms | Allocations: 30043)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 14:55:33 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"gObdYRiCsTx/SaNvyy4tHPXxbQLJsKkbqmUVxXF+8iqYKwf9NktjJhjBPMyTDiRIsRMYHYkwJyvfCB/Hi/X+6w==", "task"=>{"title"=>"Management", "content"=>"Hello", "deadline"=>"2021-07-05", "status"=>"Not started", "priority"=>"High"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTask Create (0.5ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Management"], ["content", "Hello"], ["created_at", "2021-07-02 14:55:33.192929"], ["updated_at", "2021-07-02 14:55:33.192929"], ["deadline", "2021-07-05"], ["status", "Not started"], ["priority", "High"], ["user_id", 1]]
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTRANSACTION (42.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+Redirected to http://localhost:3000/tasks/4
+Completed 302 Found in 56ms (ActiveRecord: 43.0ms | Allocations: 3205)
+
+
+Started GET "/tasks/4" for ::1 at 2021-07-02 14:55:33 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 1], ["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:84:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 0.3ms | Allocations: 91)
+  Rendered layout layouts/application.html.erb (Duration: 1722.1ms | Allocations: 27323)
+Completed 200 OK in 1728ms (Views: 1722.7ms | ActiveRecord: 0.6ms | Allocations: 29519)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 14:55:37 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 9.3ms | Allocations: 3477)
+  Rendered layout layouts/application.html.erb (Duration: 63.6ms | Allocations: 30709)
+Completed 200 OK in 77ms (Views: 64.2ms | ActiveRecord: 1.6ms | Allocations: 32414)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 14:55:39 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 8.2ms | Allocations: 1260)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 8.8ms | Allocations: 1340)
+  Rendered layout layouts/application.html.erb (Duration: 78.3ms | Allocations: 28555)
+Completed 200 OK in 85ms (Views: 79.1ms | ActiveRecord: 0.5ms | Allocations: 30018)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 14:55:56 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"aPm4lQf5LgCPP2AIsNVVVw/JZ00Q+X5lpCOVNwSnC7dwNGIJKTD8Gui3/6vo9VwDSysSUlB58FXRTp81/iwHdg==", "task"=>{"title"=>"Biology", "content"=>"Hellow", "deadline"=>"2021-07-06", "status"=>"In progress", "priority"=>"Middle"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTask Create (0.6ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Biology"], ["content", "Hellow"], ["created_at", "2021-07-02 14:55:56.623713"], ["updated_at", "2021-07-02 14:55:56.623713"], ["deadline", "2021-07-06"], ["status", "In progress"], ["priority", "Middle"], ["user_id", 1]]
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+  [1m[36mTRANSACTION (40.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:47:in `block in create'
+Redirected to http://localhost:3000/tasks/5
+Completed 302 Found in 66ms (ActiveRecord: 42.0ms | Allocations: 3211)
+
+
+Started GET "/tasks/5" for ::1 at 2021-07-02 14:55:56 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 1], ["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:84:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 0.6ms | Allocations: 91)
+  Rendered layout layouts/application.html.erb (Duration: 986.2ms | Allocations: 27356)
+Completed 200 OK in 994ms (Views: 987.7ms | ActiveRecord: 0.7ms | Allocations: 29550)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 14:56:00 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.5ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 12.5ms | Allocations: 3698)
+  Rendered layout layouts/application.html.erb (Duration: 83.9ms | Allocations: 30958)
+Completed 200 OK in 102ms (Views: 83.9ms | ActiveRecord: 2.1ms | Allocations: 32667)
+
+
+Started GET "/tasks?utf8=%E2%9C%93&q%5Btitle_cont%5D=&q%5Bstatus_cont%5D=Not+started&q%5Bpriority_cont%5D=High&commit=search" for ::1 at 2021-07-02 14:56:09 +0300
+Processing by TasksController#index as HTML
+  Parameters: {"utf8"=>"✓", "q"=>{"title_cont"=>"", "status_cont"=>"Not started", "priority_cont"=>"High"}, "commit"=>"search"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.8ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND ("tasks"."status" ILIKE '%Not started%' AND "tasks"."priority" ILIKE '%High%') LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1 AND ("tasks"."status" ILIKE '%Not started%' AND "tasks"."priority" ILIKE '%High%')[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 177.7ms | Allocations: 2766)
+  Rendered layout layouts/application.html.erb (Duration: 259.4ms | Allocations: 30015)
+Completed 200 OK in 273ms (Views: 259.4ms | ActiveRecord: 1.5ms | Allocations: 32144)
+
+
+Started GET "/tasks?utf8=%E2%9C%93&q%5Btitle_cont%5D=&q%5Bstatus_cont%5D=Not+started&q%5Bpriority_cont%5D=High&commit=search" for ::1 at 2021-07-02 15:16:38 +0300
+Processing by TasksController#index as HTML
+  Parameters: {"utf8"=>"✓", "q"=>{"title_cont"=>"", "status_cont"=>"Not started", "priority_cont"=>"High"}, "commit"=>"search"}
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (3.2ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND ("tasks"."status" ILIKE '%Not started%' AND "tasks"."priority" ILIKE '%High%') LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1 AND ("tasks"."status" ILIKE '%Not started%' AND "tasks"."priority" ILIKE '%High%')[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 19.8ms | Allocations: 2765)
+  Rendered layout layouts/application.html.erb (Duration: 416.9ms | Allocations: 29985)
+Completed 200 OK in 2344ms (Views: 414.7ms | ActiveRecord: 18.2ms | Allocations: 34062)
+
+
+Started GET "/tasks?query%5Btitle%5D=&query%5Bstatus%5D=completed&commit=search" for ::1 at 2021-07-02 15:30:41 +0300
+Processing by TasksController#index as HTML
+  Parameters: {"query"=>{"title"=>"", "status"=>"completed"}, "commit"=>"search"}
+  [1m[36mUser Load (183.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (207.1ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 232.5ms | Allocations: 4100)
+  Rendered layout layouts/application.html.erb (Duration: 1741.0ms | Allocations: 31333)
+Completed 200 OK in 5068ms (Views: 1534.7ms | ActiveRecord: 823.4ms | Allocations: 35100)
+
+
+Started GET "/blogs/1" for ::1 at 2021-07-02 15:31:03 +0300
+  
+ActionController::RoutingError (No route matches [GET] "/blogs/1"):
+  
+Started GET "/" for ::1 at 2021-07-02 16:11:21 +0300
+  [1m[35m (5.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (123.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+Redirected to http://localhost:3000/tasks
+Completed 302 Found in 246ms (ActiveRecord: 214.0ms | Allocations: 6901)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 16:11:22 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (179.6ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 1259.3ms | Allocations: 339674)
+Started GET "/tasks" for ::1 at 2021-07-02 16:11:25 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (1.2ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 22.4ms | Allocations: 3749)
+  Rendered layout layouts/application.html.erb (Duration: 6356.9ms | Allocations: 721591)
+  Rendered layout layouts/application.html.erb (Duration: 4358.9ms | Allocations: 101100)
+Completed 200 OK in 4441ms (Views: 4358.8ms | ActiveRecord: 21.5ms | Allocations: 105207)
+
+
+Completed 200 OK in 6671ms (Views: 6187.4ms | ActiveRecord: 185.1ms | Allocations: 729565)
+
+
+Started GET "/tasks?page=2" for ::1 at 2021-07-02 16:11:38 +0300
+Processing by TasksController#index as HTML
+  Parameters: {"page"=>"2"}
+  [1m[36mUser Load (2.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (1.9ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 2]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 178.0ms | Allocations: 4995)
+  Rendered layout layouts/application.html.erb (Duration: 245.6ms | Allocations: 32239)
+Completed 200 OK in 264ms (Views: 244.5ms | ActiveRecord: 4.9ms | Allocations: 33967)
+
+
+Started GET "/tasks?page=3" for ::1 at 2021-07-02 16:11:43 +0300
+Processing by TasksController#index as HTML
+  Parameters: {"page"=>"3"}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (2.2ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 2], ["OFFSET", 4]]
+  ↳ app/views/tasks/index.html.erb:46
+  Rendered tasks/index.html.erb within layouts/application (Duration: 16.7ms | Allocations: 2956)
+  Rendered layout layouts/application.html.erb (Duration: 103.3ms | Allocations: 30193)
+Completed 200 OK in 112ms (Views: 102.4ms | ActiveRecord: 2.9ms | Allocations: 31918)
+
+
+Started DELETE "/sessions/1" for ::1 at 2021-07-02 16:11:47 +0300
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"lwIc+g0hMyyVtT0mW4pzgWIlIzNEWTYUotdrzk21H+VA6Lyw841KJTj1K9TlZGaGwCPK5fbd7nMAgqBFmgYwhg==", "id"=>"1"}
+Redirected to http://localhost:3000/sessions/new
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms | Allocations: 903)
+
+
+Started GET "/sessions/new" for ::1 at 2021-07-02 16:11:47 +0300
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 144.4ms | Allocations: 1024)
+  [1m[36mCACHE User Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 242.8ms | Allocations: 28818)
+Completed 200 OK in 253ms (Views: 247.4ms | ActiveRecord: 0.4ms | Allocations: 31042)
+
+
+Started POST "/sessions" for ::1 at 2021-07-02 16:11:56 +0300
+Processing by SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"cFgA8SVdbTjX+J9ffUfxnvbPNdBWdrY7RWbgiz55limnsqC72/EUMXq4ia3DqeSZVMncBuTyblznMysA6cq5Sg==", "session"=>{"email"=>"esther.mugo@africascan.com", "password"=>"[FILTERED]"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "esther.mugo@africascan.com"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:9:in `create'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+Redirected to http://localhost:3000/users/1
+Completed 302 Found in 379ms (ActiveRecord: 0.7ms | Allocations: 1874)
+
+
+Started GET "/users/1" for ::1 at 2021-07-02 16:11:56 +0300
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:49:in `set_user'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:25:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering users/show.html.erb within layouts/application
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/users/show.html.erb:34
+  Rendered users/show.html.erb within layouts/application (Duration: 42.6ms | Allocations: 2710)
+  Rendered layout layouts/application.html.erb (Duration: 497.3ms | Allocations: 30019)
+Completed 200 OK in 517ms (Views: 501.5ms | ActiveRecord: 0.9ms | Allocations: 33056)
+
+
+Started DELETE "/sessions/1" for ::1 at 2021-07-02 16:12:30 +0300
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"9ggnLD4aejKXzDUA4KxiokHGZUQLO6mt5NcCnmci6REh4odmwLYDOzqMI/JeQnel48CMkrm/ccpGgskVsJHGcg==", "id"=>"1"}
+Redirected to http://localhost:3000/sessions/new
+Completed 302 Found in 5ms (ActiveRecord: 0.0ms | Allocations: 838)
+
+
+Started GET "/sessions/new" for ::1 at 2021-07-02 16:12:30 +0300
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 2.0ms | Allocations: 339)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 1894.4ms | Allocations: 28082)
+Completed 200 OK in 1900ms (Views: 1895.4ms | ActiveRecord: 0.4ms | Allocations: 29634)
+
+
+Started GET "/users/new" for ::1 at 2021-07-02 16:12:54 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 4.0ms | Allocations: 896)
+  Rendered users/new.html.erb within layouts/application (Duration: 6.6ms | Allocations: 1367)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 956.7ms | Allocations: 29086)
+Completed 200 OK in 965ms (Views: 959.8ms | ActiveRecord: 0.3ms | Allocations: 30762)
+
+
+Started POST "/users" for ::1 at 2021-07-02 16:13:19 +0300
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"rk1pnMKbBlyUZLyNuBs86uNHP1OXzDEAk7BiLerTNN6UHm6yMrVXq4au/FLIxAnlY13u35iZk44AtYJJ4TW9eg==", "user"=>{"name"=>"Essy", "email"=>"shiroessy@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Create User"}
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:16:in `create'
+  [1m[36mUser Create (42.4ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "Essy"], ["email", "shiroessy@gmail.com"], ["password_digest", "$2a$12$fRaI3tvW24Vc1IQcGeNCVe/qKOeKe0po.JEissiORqIF.YKdLPNuC"], ["created_at", "2021-07-02 16:13:19.543931"], ["updated_at", "2021-07-02 16:13:19.543931"]]
+  ↳ app/controllers/users_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (87.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:16:in `create'
+Redirected to http://localhost:3000/users/2
+Completed 302 Found in 593ms (ActiveRecord: 130.9ms | Allocations: 3430)
+
+
+Started GET "/users/2" for ::1 at 2021-07-02 16:13:19 +0300
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:49:in `set_user'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:25:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering users/show.html.erb within layouts/application
+  [1m[36mTask Load (0.8ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/views/users/show.html.erb:34
+  Rendered users/show.html.erb within layouts/application (Duration: 6.4ms | Allocations: 674)
+  Rendered layout layouts/application.html.erb (Duration: 1008.8ms | Allocations: 27931)
+Completed 200 OK in 1030ms (Views: 1012.0ms | ActiveRecord: 1.6ms | Allocations: 30236)
+
+
+Started GET "/tasks.2" for ::1 at 2021-07-02 16:13:31 +0300
+Processing by TasksController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (1.8ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 2], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  Rendered tasks/index.html.erb within layouts/application (Duration: 14.8ms | Allocations: 1843)
+  Rendered layout layouts/application.html.erb (Duration: 106.7ms | Allocations: 29056)
+Completed 200 OK in 118ms (Views: 106.8ms | ActiveRecord: 2.3ms | Allocations: 30955)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 16:13:40 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 193.1ms | Allocations: 4691)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 196.5ms | Allocations: 5008)
+  Rendered layout layouts/application.html.erb (Duration: 275.3ms | Allocations: 32220)
+Completed 200 OK in 282ms (Views: 276.4ms | ActiveRecord: 0.2ms | Allocations: 33805)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 16:13:54 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"DoufAxJbq59/+CqsRIK6NCOWnpJIsQWYvalHnX/a94AWRkWfPJJ5hRhwtQ8corNgZ3TrjQgxi6jIxE2fhVH7QQ==", "task"=>{"title"=>"Swahili", "content"=>"Jambo", "deadline"=>"2021-07-02", "status"=>"Not started", "priority"=>"High"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (2.9ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTask Create (48.3ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Swahili"], ["content", "Jambo"], ["created_at", "2021-07-02 16:13:54.821004"], ["updated_at", "2021-07-02 16:13:54.821004"], ["deadline", "2021-07-02"], ["status", "Not started"], ["priority", "High"], ["user_id", 2]]
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTRANSACTION (41.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+Redirected to http://localhost:3000/tasks/6
+Completed 302 Found in 112ms (ActiveRecord: 93.6ms | Allocations: 3765)
+
+
+Started GET "/tasks/6" for ::1 at 2021-07-02 16:13:54 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"6"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 2], ["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:85:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 42.9ms | Allocations: 335)
+  Rendered layout layouts/application.html.erb (Duration: 1025.2ms | Allocations: 27590)
+Completed 200 OK in 1035ms (Views: 1027.2ms | ActiveRecord: 0.5ms | Allocations: 29959)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 16:13:57 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 2], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  Rendered tasks/index.html.erb within layouts/application (Duration: 4.3ms | Allocations: 1715)
+  Rendered layout layouts/application.html.erb (Duration: 76.3ms | Allocations: 28964)
+Completed 200 OK in 86ms (Views: 76.8ms | ActiveRecord: 0.8ms | Allocations: 30685)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 16:14:01 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 8.1ms | Allocations: 1260)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 9.4ms | Allocations: 1340)
+  Rendered layout layouts/application.html.erb (Duration: 150.7ms | Allocations: 28581)
+Completed 200 OK in 166ms (Views: 151.9ms | ActiveRecord: 1.4ms | Allocations: 30034)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 16:14:17 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"Wz33iRyMLgLvPDp9vV6opWk/JTaQ2ytvRPdWQ+argIhD8C0VMkX8GIi0pd7lfqHxLd1QKdBbpV8xmlxBHCCMSQ==", "task"=>{"title"=>"English", "content"=>"Hello world", "deadline"=>"2021-07-03", "status"=>"In progress", "priority"=>"Middle"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTask Create (0.9ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "English"], ["content", "Hello world"], ["created_at", "2021-07-02 16:14:17.555850"], ["updated_at", "2021-07-02 16:14:17.555850"], ["deadline", "2021-07-03"], ["status", "In progress"], ["priority", "Middle"], ["user_id", 2]]
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTRANSACTION (42.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+Redirected to http://localhost:3000/tasks/7
+Completed 302 Found in 61ms (ActiveRecord: 44.3ms | Allocations: 3480)
+
+
+Started GET "/tasks/7" for ::1 at 2021-07-02 16:14:17 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.9ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 2], ["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:85:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 0.5ms | Allocations: 93)
+  Rendered layout layouts/application.html.erb (Duration: 100.1ms | Allocations: 27338)
+Completed 200 OK in 115ms (Views: 100.8ms | ActiveRecord: 2.4ms | Allocations: 29528)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 16:14:19 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.8ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 2], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 9.2ms | Allocations: 2475)
+  Rendered layout layouts/application.html.erb (Duration: 90.5ms | Allocations: 29701)
+Completed 200 OK in 112ms (Views: 90.2ms | ActiveRecord: 2.6ms | Allocations: 31421)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 16:14:21 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 2.8ms | Allocations: 1260)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 3.2ms | Allocations: 1340)
+  Rendered layout layouts/application.html.erb (Duration: 70.0ms | Allocations: 28560)
+Completed 200 OK in 83ms (Views: 71.0ms | ActiveRecord: 0.4ms | Allocations: 30017)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 16:14:38 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"dubT7wpRZMN32oIybEg7kXr+aoJaDQtwCDX3KCXChc5uKwlzJJi22RBSHZE0aDLFPhwfnRqNhUB9WP0q30mJDw==", "task"=>{"title"=>"Management", "content"=>"Hello", "deadline"=>"2021-07-03", "status"=>"Complete", "priority"=>"Low"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (6.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTask Create (6.4ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Management"], ["content", "Hello"], ["created_at", "2021-07-02 16:14:38.028249"], ["updated_at", "2021-07-02 16:14:38.028249"], ["deadline", "2021-07-03"], ["status", "Complete"], ["priority", "Low"], ["user_id", 2]]
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTRANSACTION (41.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+Redirected to http://localhost:3000/tasks/8
+Completed 302 Found in 74ms (ActiveRecord: 55.5ms | Allocations: 3461)
+
+
+Started GET "/tasks/8" for ::1 at 2021-07-02 16:14:38 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"8"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (10.5ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 2], ["id", 8], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:85:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 0.7ms | Allocations: 93)
+  Rendered layout layouts/application.html.erb (Duration: 515.7ms | Allocations: 27364)
+Completed 200 OK in 541ms (Views: 516.9ms | ActiveRecord: 11.1ms | Allocations: 29564)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 16:14:40 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 2], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 8.9ms | Allocations: 3481)
+  Rendered layout layouts/application.html.erb (Duration: 94.5ms | Allocations: 30730)
+Completed 200 OK in 113ms (Views: 94.7ms | ActiveRecord: 1.1ms | Allocations: 32441)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 16:14:42 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 2.2ms | Allocations: 1260)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 2.6ms | Allocations: 1340)
+  Rendered layout layouts/application.html.erb (Duration: 67.1ms | Allocations: 28582)
+Completed 200 OK in 81ms (Views: 67.8ms | ActiveRecord: 0.4ms | Allocations: 30029)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 16:14:55 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"cwO4e0ajmWffzBGhRaGopbU3YkZUSWPHhMd7Cq0qplZrzmLnaGpLfbhEjgIdgaHx8dUXWRTJ7ffxqnEIV6Gqlw==", "task"=>{"title"=>"Biology", "content"=>"Hi", "deadline"=>"2021-07-04", "status"=>"Complete", "priority"=>"Low"}, "commit"=>"Create Task"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTask Create (0.8ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Biology"], ["content", "Hi"], ["created_at", "2021-07-02 16:14:55.330215"], ["updated_at", "2021-07-02 16:14:55.330215"], ["deadline", "2021-07-04"], ["status", "Complete"], ["priority", "Low"], ["user_id", 2]]
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTRANSACTION (41.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+Redirected to http://localhost:3000/tasks/9
+Completed 302 Found in 57ms (ActiveRecord: 42.6ms | Allocations: 3472)
+
+
+Started GET "/tasks/9" for ::1 at 2021-07-02 16:14:55 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"9"}
+  [1m[36mUser Load (3.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 2], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:85:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 0.4ms | Allocations: 93)
+  Rendered layout layouts/application.html.erb (Duration: 108.0ms | Allocations: 27338)
+Completed 200 OK in 117ms (Views: 108.6ms | ActiveRecord: 3.4ms | Allocations: 29529)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 16:14:57 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 2], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 14.0ms | Allocations: 3475)
+  Rendered layout layouts/application.html.erb (Duration: 100.6ms | Allocations: 30701)
+Completed 200 OK in 116ms (Views: 101.0ms | ActiveRecord: 1.1ms | Allocations: 32409)
+
+
+Started DELETE "/sessions/2" for ::1 at 2021-07-02 16:15:15 +0300
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"8QEVEixSx1yiReH6WHekSNe7JX/mZXhNG8GslyoPq+Am67VY0v6+VQ8F9wjmmbFPdb3MqVThoCq5lGcc/byEgw==", "id"=>"2"}
+Redirected to http://localhost:3000/sessions/new
+Completed 302 Found in 4ms (ActiveRecord: 0.0ms | Allocations: 838)
+
+
+Started GET "/sessions/new" for ::1 at 2021-07-02 16:15:15 +0300
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 0.8ms | Allocations: 339)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 1035.0ms | Allocations: 28064)
+Completed 200 OK in 1049ms (Views: 1035.7ms | ActiveRecord: 0.4ms | Allocations: 29609)
+
+
+Started POST "/sessions" for ::1 at 2021-07-02 16:16:00 +0300
+Processing by SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"1BkRRk9rwazIQ0HkFSH1J2GGfEpv8NimGc2wXCeDp5kD87EMsce4pWUDVxarz+Agw4CVnN10AMG7mHvX8DCI+g==", "session"=>{"email"=>"admin@gmail.com", "password"=>"[FILTERED]"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "admin@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:9:in `create'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 0.7ms | Allocations: 330)
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 574.9ms | Allocations: 28121)
+Completed 200 OK in 579ms (Views: 575.5ms | ActiveRecord: 0.7ms | Allocations: 29554)
+
+
+  [1m[35m (3.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (40.8ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at", "admin") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "admin"], ["email", "admin@gmail.com"], ["password_digest", "$2a$12$B9ntDV7mSMTAkd4XS9awV.7hi/3B2kubVbIR87GF5P6jYrWfYD/cO"], ["created_at", "2021-07-02 16:17:02.325275"], ["updated_at", "2021-07-02 16:17:02.325275"], ["admin", true]]
+  [1m[36mTRANSACTION (42.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (82.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (128.5ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at", "admin") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "admin"], ["email", "admin@gmail.com"], ["password_digest", "$2a$12$xViR82WvT7NmEAA7Q6KvP.V99Y8dfEQzko6CmBsSWn5biotssgdEK"], ["created_at", "2021-07-02 16:18:36.104689"], ["updated_at", "2021-07-02 16:18:36.104689"], ["admin", true]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+Started GET "/" for ::1 at 2021-07-02 16:19:16 +0300
+  [1m[35m (164.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (123.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 14.6ms | Allocations: 2457)
+  Rendered users/new.html.erb within layouts/application (Duration: 20.0ms | Allocations: 3088)
+  Rendered layout layouts/application.html.erb (Duration: 20.5ms | Allocations: 3166)
+Completed 500 Internal Server Error in 373ms (ActiveRecord: 294.9ms | Allocations: 11689)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:22:36 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (2.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 31.2ms | Allocations: 5054)
+  Rendered users/new.html.erb within layouts/application (Duration: 34.7ms | Allocations: 5482)
+  Rendered layout layouts/application.html.erb (Duration: 35.0ms | Allocations: 5552)
+Completed 500 Internal Server Error in 60ms (ActiveRecord: 2.0ms | Allocations: 7944)
+
+
+  
+ActionView::Template::Error (undefined local variable or method `form' for #<ActionView::Base:0x00000000008fc0>
+Did you mean?  for
+               fork):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= form.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:24:11 +0300
+  [1m[35m (2.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (123.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 23.4ms | Allocations: 2457)
+  Rendered users/new.html.erb within layouts/application (Duration: 30.0ms | Allocations: 3088)
+  Rendered layout layouts/application.html.erb (Duration: 30.5ms | Allocations: 3166)
+Completed 500 Internal Server Error in 254ms (ActiveRecord: 169.6ms | Allocations: 11689)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:29:11 +0300
+  [1m[35m (321.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (125.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 14.3ms | Allocations: 2457)
+  Rendered users/new.html.erb within layouts/application (Duration: 20.2ms | Allocations: 3088)
+  Rendered layout layouts/application.html.erb (Duration: 20.7ms | Allocations: 3166)
+Completed 500 Internal Server Error in 466ms (ActiveRecord: 388.2ms | Allocations: 11689)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:33:42 +0300
+  [1m[35m (5.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (215.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 9.4ms | Allocations: 2457)
+  Rendered users/new.html.erb within layouts/application (Duration: 14.7ms | Allocations: 3088)
+  Rendered layout layouts/application.html.erb (Duration: 16.6ms | Allocations: 3166)
+Completed 500 Internal Server Error in 584ms (ActiveRecord: 510.5ms | Allocations: 11690)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:34:05 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 1.6ms | Allocations: 1345)
+  Rendered users/new.html.erb within layouts/application (Duration: 1.9ms | Allocations: 1410)
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | Allocations: 1479)
+Completed 500 Internal Server Error in 9ms (ActiveRecord: 0.5ms | Allocations: 3003)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:36:56 +0300
+  [1m[35m (82.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (123.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 12.0ms | Allocations: 2457)
+  Rendered users/new.html.erb within layouts/application (Duration: 17.0ms | Allocations: 3088)
+  Rendered layout layouts/application.html.erb (Duration: 17.3ms | Allocations: 3166)
+Completed 500 Internal Server Error in 368ms (ActiveRecord: 291.1ms | Allocations: 11689)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:41:22 +0300
+  [1m[35m (1.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (166.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 12.6ms | Allocations: 2457)
+  Rendered users/new.html.erb within layouts/application (Duration: 18.8ms | Allocations: 3088)
+  Rendered layout layouts/application.html.erb (Duration: 19.4ms | Allocations: 3166)
+Completed 500 Internal Server Error in 615ms (ActiveRecord: 504.7ms | Allocations: 11688)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:43:11 +0300
+  [1m[35m (91.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (122.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 10.1ms | Allocations: 2456)
+  Rendered users/new.html.erb within layouts/application (Duration: 16.0ms | Allocations: 3087)
+  Rendered layout layouts/application.html.erb (Duration: 16.2ms | Allocations: 3165)
+Completed 500 Internal Server Error in 370ms (ActiveRecord: 296.5ms | Allocations: 11539)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:56:33 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (2.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 2.7ms | Allocations: 1432)
+  Rendered users/new.html.erb within layouts/application (Duration: 3.1ms | Allocations: 1502)
+  Rendered layout layouts/application.html.erb (Duration: 3.3ms | Allocations: 1572)
+Completed 500 Internal Server Error in 4171ms (ActiveRecord: 294.0ms | Allocations: 8425)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 16:57:23 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 3.5ms | Allocations: 1345)
+  Rendered users/new.html.erb within layouts/application (Duration: 4.0ms | Allocations: 1410)
+  Rendered layout layouts/application.html.erb (Duration: 4.8ms | Allocations: 1478)
+Completed 500 Internal Server Error in 14ms (ActiveRecord: 0.9ms | Allocations: 2881)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 17:07:47 +0300
+  [1m[35m (156.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (186.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 14.6ms | Allocations: 2456)
+  Rendered users/new.html.erb within layouts/application (Duration: 22.0ms | Allocations: 3087)
+  Rendered layout layouts/application.html.erb (Duration: 22.4ms | Allocations: 3165)
+Completed 500 Internal Server Error in 511ms (ActiveRecord: 397.0ms | Allocations: 11539)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 17:10:34 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 3.3ms | Allocations: 1345)
+  Rendered users/new.html.erb within layouts/application (Duration: 4.1ms | Allocations: 1410)
+  Rendered layout layouts/application.html.erb (Duration: 6.0ms | Allocations: 1479)
+Completed 500 Internal Server Error in 13ms (ActiveRecord: 0.4ms | Allocations: 2901)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 17:13:14 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 3.4ms | Allocations: 1345)
+  Rendered users/new.html.erb within layouts/application (Duration: 4.0ms | Allocations: 1410)
+  Rendered layout layouts/application.html.erb (Duration: 5.1ms | Allocations: 1479)
+Completed 500 Internal Server Error in 14ms (ActiveRecord: 0.5ms | Allocations: 2899)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 17:18:31 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 2.5ms | Allocations: 1345)
+  Rendered users/new.html.erb within layouts/application (Duration: 4.3ms | Allocations: 1410)
+  Rendered layout layouts/application.html.erb (Duration: 4.8ms | Allocations: 1479)
+Completed 500 Internal Server Error in 14ms (ActiveRecord: 0.5ms | Allocations: 2899)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 17:20:41 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 4.0ms | Allocations: 1345)
+  Rendered users/new.html.erb within layouts/application (Duration: 4.8ms | Allocations: 1410)
+  Rendered layout layouts/application.html.erb (Duration: 6.5ms | Allocations: 1478)
+Completed 500 Internal Server Error in 13ms (ActiveRecord: 0.5ms | Allocations: 2880)
+
+
+  
+ActionView::Template::Error (:en is not a valid locale):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 17:22:58 +0300
+Started GET "/" for ::1 at 2021-07-02 17:23:01 +0300
+  [1m[35m (86.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#new as HTML
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (117.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  [1m[36mUser Load (308.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+Started GET "/" for ::1 at 2021-07-02 17:23:10 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 11619.8ms | Allocations: 1485149)
+  Rendered users/_register.html.erb (Duration: 1891.3ms | Allocations: 438760)
+  Rendered users/_register.html.erb (Duration: 10733.0ms | Allocations: 1143350)
+  Rendered users/new.html.erb within layouts/application (Duration: 11632.0ms | Allocations: 1489715)
+  Rendered layout layouts/application.html.erb (Duration: 11633.4ms | Allocations: 1490149)
+  Rendered users/new.html.erb within layouts/application (Duration: 10734.7ms | Allocations: 1143727)
+Completed 500 Internal Server Error in 12027ms (ActiveRecord: 348.3ms | Allocations: 1500574)
+
+
+Started GET "/" for ::1 at 2021-07-02 17:23:16 +0300
+  Rendered layout layouts/application.html.erb (Duration: 10889.2ms | Allocations: 1171912)
+Completed 500 Internal Server Error in 12040ms (ActiveRecord: 518.5ms | Allocations: 1502778)
+
+
+  Rendered users/new.html.erb within layouts/application (Duration: 1897.0ms | Allocations: 441311)
+  Rendered layout layouts/application.html.erb (Duration: 1905.2ms | Allocations: 443678)
+Completed 500 Internal Server Error in 4122ms (ActiveRecord: 828.9ms | Allocations: 538029)
+
+
+  
+ActionView::Template::Error (can not load translations from /Users/harakenken22/Desktop/Everyleaf 4/config/locales/ja.yml: expects it to return a hash, but does not):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+  
+ActionView::Template::Error (can not load translations from /Users/harakenken22/Desktop/Everyleaf 4/config/locales/ja.yml: expects it to return a hash, but does not):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Processing by UsersController#new as HTML
+  
+ActionView::Template::Error (can not load translations from /Users/harakenken22/Desktop/Everyleaf 4/config/locales/ja.yml: expects it to return a hash, but does not):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 683.8ms | Allocations: 465129)
+  Rendered users/new.html.erb within layouts/application (Duration: 684.5ms | Allocations: 465578)
+  Rendered layout layouts/application.html.erb (Duration: 686.2ms | Allocations: 466530)
+Completed 500 Internal Server Error in 2136ms (ActiveRecord: 17.7ms | Allocations: 978186)
+
+
+  
+ActionView::Template::Error (can not load translations from /Users/harakenken22/Desktop/Everyleaf 4/config/locales/ja.yml: expects it to return a hash, but does not):
+    12:   <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class: "form-control" %>
+    13: </div>
+    14: <div class="form-group">
+    15:   <%= f.submit %>
+    16: </div>
+    17: <% end %>
+  
+app/views/users/_register.html.erb:15
+app/views/users/_register.html.erb:1
+app/views/users/new.html.erb:14
+Started GET "/" for ::1 at 2021-07-02 17:26:20 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 3301.0ms | Allocations: 405539)
+  Rendered users/new.html.erb within layouts/application (Duration: 3302.2ms | Allocations: 405648)
+  [1m[36mCACHE User Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 9481.0ms | Allocations: 729011)
+Completed 200 OK in 9720ms (Views: 9485.8ms | ActiveRecord: 194.3ms | Allocations: 734170)
+
+
+Started GET "/sessions/new" for ::1 at 2021-07-02 17:26:45 +0300
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 7.6ms | Allocations: 896)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 1047.3ms | Allocations: 28640)
+Completed 200 OK in 1054ms (Views: 1049.7ms | ActiveRecord: 0.3ms | Allocations: 30876)
+
+
+Started GET "/users/new" for ::1 at 2021-07-02 17:26:50 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (10.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 2.9ms | Allocations: 505)
+  Rendered users/new.html.erb within layouts/application (Duration: 3.9ms | Allocations: 588)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 90.7ms | Allocations: 28273)
+Completed 200 OK in 111ms (Views: 91.8ms | ActiveRecord: 11.0ms | Allocations: 29830)
+
+
+Started POST "/users" for ::1 at 2021-07-02 17:27:05 +0300
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"L+VsgU6NkGNrezWZe3BAjVY3zbGI34AiAp+JTxOhoKJjzf9plo57ZC/iDfCFmFg72aIqZnsuYx5VT5EHA+32/A==", "user"=>{"name"=>"Essy", "email"=>"shiroessy@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"登録する"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:16:in `create'
+  [1m[36mUser Create (166.0ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "Essy"], ["email", "shiroessy@gmail.com"], ["password_digest", "$2a$12$sMswth6sOeh05GEljsfBq../2VtfgFe886nzhAoJf7y2SZq6axvM."], ["created_at", "2021-07-02 17:27:05.974113"], ["updated_at", "2021-07-02 17:27:05.974113"]]
+  ↳ app/controllers/users_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users_controller.rb:16:in `create'
+Completed 500 Internal Server Error in 617ms (ActiveRecord: 166.4ms | Allocations: 4465)
+
+
+  
+ActiveRecord::RecordNotUnique (PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_users_on_email"
+DETAIL:  Key (email)=(shiroessy@gmail.com) already exists.
+):
+  
+app/controllers/users_controller.rb:16:in `create'
+Started GET "/users/new" for ::1 at 2021-07-02 17:27:35 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 1.6ms | Allocations: 504)
+  Rendered users/new.html.erb within layouts/application (Duration: 2.6ms | Allocations: 587)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 1477.1ms | Allocations: 28327)
+Completed 200 OK in 1482ms (Views: 1477.9ms | ActiveRecord: 0.3ms | Allocations: 29878)
+
+
+Started GET "/sessions/new" for ::1 at 2021-07-02 17:27:52 +0300
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (2.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 2.6ms | Allocations: 367)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 119.2ms | Allocations: 28054)
+Completed 200 OK in 148ms (Views: 120.4ms | ActiveRecord: 2.2ms | Allocations: 29572)
+
+
+Started GET "/users/new" for ::1 at 2021-07-02 17:28:01 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 1.8ms | Allocations: 504)
+  Rendered users/new.html.erb within layouts/application (Duration: 2.5ms | Allocations: 587)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 106.9ms | Allocations: 28274)
+Completed 200 OK in 127ms (Views: 109.8ms | ActiveRecord: 1.0ms | Allocations: 29831)
+
+
+Started GET "/sessions/new" for ::1 at 2021-07-02 17:28:06 +0300
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 0.8ms | Allocations: 367)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 80.6ms | Allocations: 28054)
+Completed 200 OK in 112ms (Views: 81.2ms | ActiveRecord: 0.4ms | Allocations: 29574)
+
+
+Started GET "/users/new" for ::1 at 2021-07-02 17:28:12 +0300
+Processing by UsersController#new as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_register.html.erb (Duration: 3.6ms | Allocations: 504)
+  Rendered users/new.html.erb within layouts/application (Duration: 4.4ms | Allocations: 587)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 97.1ms | Allocations: 28272)
+Completed 200 OK in 127ms (Views: 98.0ms | ActiveRecord: 1.0ms | Allocations: 29823)
+
+
+Started POST "/users" for ::1 at 2021-07-02 17:28:59 +0300
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"e5KpjmVaYmWAN3yhBfRrhAMKZFE7VUPJAK2KxNYxFZ03ujpmvVmJYsSuRMj7HHMyjJ+DhsikoPVXfZKMxn1Dww==", "user"=>{"name"=>"Amina", "email"=>"amina@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"登録する"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:16:in `create'
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "Amina"], ["email", "amina@gmail.com"], ["password_digest", "$2a$12$wK.um2BdyKIhf61NBay0z.QFl13XTKbhgCCpW12ZEkiUuI7eh7sZO"], ["created_at", "2021-07-02 17:29:00.156632"], ["updated_at", "2021-07-02 17:29:00.156632"]]
+  ↳ app/controllers/users_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (41.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:16:in `create'
+Redirected to http://localhost:3000/users/6
+Completed 302 Found in 479ms (ActiveRecord: 42.0ms | Allocations: 2867)
+
+
+Started GET "/users/6" for ::1 at 2021-07-02 17:29:00 +0300
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"6"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:49:in `set_user'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:25:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering users/show.html.erb within layouts/application
+  [1m[36mTask Load (246.9ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/users/show.html.erb:34
+  Rendered users/show.html.erb within layouts/application (Duration: 347.1ms | Allocations: 2576)
+  Rendered layout layouts/application.html.erb (Duration: 1410.8ms | Allocations: 29835)
+Completed 200 OK in 1468ms (Views: 1163.5ms | ActiveRecord: 248.8ms | Allocations: 36701)
+
+
+Started GET "/tasks.6" for ::1 at 2021-07-02 17:29:43 +0300
+Processing by TasksController#index as */*
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (2.5ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 6], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  Rendered tasks/index.html.erb within layouts/application (Duration: 29.4ms | Allocations: 4112)
+  Rendered layout layouts/application.html.erb (Duration: 491.3ms | Allocations: 31395)
+Completed 200 OK in 509ms (Views: 493.3ms | ActiveRecord: 3.2ms | Allocations: 34180)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 17:29:45 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 12.9ms | Allocations: 2345)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 15.5ms | Allocations: 2662)
+  Rendered layout layouts/application.html.erb (Duration: 88.1ms | Allocations: 29875)
+Completed 200 OK in 127ms (Views: 88.9ms | ActiveRecord: 24.2ms | Allocations: 35402)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 17:30:03 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"Up6mtw1dVcNE3Zhax7TyQgCr87IJseU712hcW2JQrenq4kBIDPCj+dNnvshI9iEzbf798Nd2/awYfMRd8EbU4Q==", "task"=>{"title"=>"Swahili", "content"=>"Jambo", "deadline"=>"2021-07-03", "status"=>"Not started", "priority"=>"High"}, "commit"=>"登録する"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTask Create (44.0ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "Swahili"], ["content", "Jambo"], ["created_at", "2021-07-02 17:30:03.688307"], ["updated_at", "2021-07-02 17:30:03.688307"], ["deadline", "2021-07-03"], ["status", "Not started"], ["priority", "High"], ["user_id", 6]]
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTRANSACTION (43.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+Redirected to http://localhost:3000/tasks/10
+Completed 302 Found in 121ms (ActiveRecord: 87.9ms | Allocations: 4837)
+
+
+Started GET "/tasks/10" for ::1 at 2021-07-02 17:30:03 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"10"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 6], ["id", 10], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:85:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 0.9ms | Allocations: 346)
+  Rendered layout layouts/application.html.erb (Duration: 113.2ms | Allocations: 27571)
+Completed 200 OK in 123ms (Views: 114.6ms | ActiveRecord: 0.7ms | Allocations: 29975)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 17:30:06 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.6ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 6], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  Rendered tasks/index.html.erb within layouts/application (Duration: 9.1ms | Allocations: 1930)
+  Rendered layout layouts/application.html.erb (Duration: 88.0ms | Allocations: 29163)
+Completed 200 OK in 116ms (Views: 88.2ms | ActiveRecord: 1.3ms | Allocations: 30984)
+
+
+Started GET "/tasks/new" for ::1 at 2021-07-02 17:30:13 +0300
+Processing by TasksController#new as HTML
+  [1m[36mUser Load (2.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (Duration: 4.3ms | Allocations: 1464)
+  Rendered tasks/new.html.erb within layouts/application (Duration: 4.8ms | Allocations: 1544)
+  Rendered layout layouts/application.html.erb (Duration: 77.0ms | Allocations: 28787)
+Completed 200 OK in 97ms (Views: 77.6ms | ActiveRecord: 2.9ms | Allocations: 30246)
+
+
+Started POST "/tasks" for ::1 at 2021-07-02 17:30:31 +0300
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"h6caMvMpDo15aI5nH9H81DJ7OTGprgbNGuswhel8yME/2/zN8oT4t+7SqPWQky+lXy43c3dpHlrV/6iDe2qxyQ==", "task"=>{"title"=>"English", "content"=>"Hello world", "deadline"=>"2021-07-04", "status"=>"In progress", "priority"=>"Middle"}, "commit"=>"登録する"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTask Create (1.0ms)[0m  [1m[32mINSERT INTO "tasks" ("title", "content", "created_at", "updated_at", "deadline", "status", "priority", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["title", "English"], ["content", "Hello world"], ["created_at", "2021-07-02 17:30:31.337909"], ["updated_at", "2021-07-02 17:30:31.337909"], ["deadline", "2021-07-04"], ["status", "In progress"], ["priority", "Middle"], ["user_id", 6]]
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+  [1m[36mTRANSACTION (41.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/tasks_controller.rb:48:in `block in create'
+Redirected to http://localhost:3000/tasks/11
+Completed 302 Found in 90ms (ActiveRecord: 43.8ms | Allocations: 3482)
+
+
+Started GET "/tasks/11" for ::1 at 2021-07-02 17:30:31 +0300
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"11"}
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 AND "tasks"."id" = $2 LIMIT $3[0m  [["user_id", 6], ["id", 11], ["LIMIT", 1]]
+  ↳ app/controllers/tasks_controller.rb:85:in `set_task'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/show.html.erb within layouts/application
+  Rendered tasks/show.html.erb within layouts/application (Duration: 1.2ms | Allocations: 93)
+  Rendered layout layouts/application.html.erb (Duration: 1030.4ms | Allocations: 27321)
+Completed 200 OK in 1040ms (Views: 1031.3ms | ActiveRecord: 1.7ms | Allocations: 29525)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 17:30:36 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.5ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 6], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:46
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/tasks/index.html.erb:65
+  Rendered tasks/index.html.erb within layouts/application (Duration: 50.1ms | Allocations: 5041)
+  Rendered layout layouts/application.html.erb (Duration: 127.8ms | Allocations: 32253)
+Completed 200 OK in 149ms (Views: 128.5ms | ActiveRecord: 2.2ms | Allocations: 33961)
+
+
+Started GET "/tasks" for ::1 at 2021-07-02 17:41:15 +0300
+Processing by TasksController#index as HTML
+  [1m[36mUser Load (162.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (211.1ms)[0m  [1m[34mSELECT DISTINCT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 6], ["LIMIT", 2], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.erb:47
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(DISTINCT "tasks"."id") FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/tasks/index.html.erb:67
+  Rendered tasks/index.html.erb within layouts/application (Duration: 239.0ms | Allocations: 3715)
+  Rendered layout layouts/application.html.erb (Duration: 1669.0ms | Allocations: 31404)
+Completed 200 OK in 2493ms (Views: 1461.5ms | ActiveRecord: 1013.3ms | Allocations: 36075)
+
+
+Started DELETE "/sessions/6" for ::1 at 2021-07-02 17:41:50 +0300
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"e7Nbk9V8+G8HW4Hu1r7kU43VHY5A5pOwvrXCBDqKJsj1xF/NKKpS2CJcEMh0I1cmAvA3ebtFqFkz1C62ZWv8mg==", "id"=>"6"}
+Redirected to http://localhost:3000/sessions/new
+Completed 302 Found in 2ms (ActiveRecord: 0.0ms | Allocations: 848)
+
+
+Started GET "/sessions/new" for ::1 at 2021-07-02 17:41:50 +0300
+Processing by SessionsController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (Duration: 4.4ms | Allocations: 593)
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendered layout layouts/application.html.erb (Duration: 1146.2ms | Allocations: 28363)
+Completed 200 OK in 1165ms (Views: 1158.5ms | ActiveRecord: 0.4ms | Allocations: 30554)
+
+
+Started POST "/sessions" for ::1 at 2021-07-02 17:42:02 +0300
+Processing by SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"sHUbrvSFE8/DyH+EmK25y8+uYxaatkSvOvJgSJ35VMg+Ah/wCVO5eObP7qI6MAq+QItJ4WEVf0a3k4z6whiOmg==", "session"=>{"email"=>"admin@gmail.com", "password"=>"[FILTERED]"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "admin@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:9:in `create'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+Redirected to http://localhost:3000/admin/users
+Completed 302 Found in 401ms (ActiveRecord: 0.8ms | Allocations: 1846)
+
+
+Started GET "/admin/users" for ::1 at 2021-07-02 17:42:02 +0300
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users"."id", "users"."name", "users"."email", "users"."admin" FROM "users" ORDER BY "users"."created_at" ASC[0m
+  ↳ app/views/admin/users/index.html.erb:20
+  [1m[35m (42.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/admin/users/index.html.erb:26
+  Rendered admin/users/index.html.erb within layouts/application (Duration: 73.5ms | Allocations: 4427)
+  Rendered layout layouts/application.html.erb (Duration: 1368.8ms | Allocations: 31755)
+Completed 200 OK in 1399ms (Views: 1341.2ms | ActiveRecord: 44.9ms | Allocations: 33961)
+
+
+Started GET "/admin/users/1" for ::1 at 2021-07-02 17:42:57 +0300
+Processing by Admin::UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/admin/users_controller.rb:59:in `set_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/show.html.erb within layouts/application
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/admin/users/show.html.erb:19
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 1], ["LIMIT", 5], ["OFFSET", 0]]
+  ↳ app/views/admin/users/show.html.erb:46
+  Rendered admin/users/show.html.erb within layouts/application (Duration: 64.1ms | Allocations: 1773)
+  Rendered layout layouts/application.html.erb (Duration: 591.6ms | Allocations: 29038)
+Completed 200 OK in 605ms (Views: 591.4ms | ActiveRecord: 2.5ms | Allocations: 31195)
+
+
+Started POST "/sessions" for ::1 at 2021-07-02 17:43:24 +0300
+Processing by SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"sHUbrvSFE8/DyH+EmK25y8+uYxaatkSvOvJgSJ35VMg+Ah/wCVO5eObP7qI6MAq+QItJ4WEVf0a3k4z6whiOmg==", "session"=>{"email"=>"admin@gmail.com", "password"=>"[FILTERED]"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "admin@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:9:in `create'
+  [1m[36mUser Load (4.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+Redirected to http://localhost:3000/admin/users
+Completed 302 Found in 380ms (ActiveRecord: 4.6ms | Allocations: 1741)
+
+
+Started GET "/admin/users" for ::1 at 2021-07-02 17:43:24 +0300
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users"."id", "users"."name", "users"."email", "users"."admin" FROM "users" ORDER BY "users"."created_at" ASC[0m
+  ↳ app/views/admin/users/index.html.erb:20
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/admin/users/index.html.erb:26
+  Rendered admin/users/index.html.erb within layouts/application (Duration: 18.2ms | Allocations: 4032)
+  Rendered layout layouts/application.html.erb (Duration: 965.2ms | Allocations: 31333)
+Completed 200 OK in 970ms (Views: 963.2ms | ActiveRecord: 2.9ms | Allocations: 32814)
+
+
+Started DELETE "/admin/users/3" for ::1 at 2021-07-02 17:43:48 +0300
+Processing by Admin::UsersController#destroy as HTML
+  Parameters: {"authenticity_token"=>"BCf8vgFAV7c7N6lbUX46IqgIUQHrFQ9J16R+sYmwSaqKUPjg/Jb9AB4wOH3z44lXJy179hC2NKBaxZID1lGT+A==", "id"=>"3"}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mUser Load (4.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/admin/users_controller.rb:59:in `set_user'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/admin/users_controller.rb:43:in `destroy'
+Redirected to http://localhost:3000/admin/users
+Completed 302 Found in 22ms (ActiveRecord: 5.4ms | Allocations: 2103)
+
+
+Started GET "/admin/users" for ::1 at 2021-07-02 17:43:48 +0300
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users"."id", "users"."name", "users"."email", "users"."admin" FROM "users" ORDER BY "users"."created_at" ASC[0m
+  ↳ app/views/admin/users/index.html.erb:20
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/admin/users/index.html.erb:26
+  Rendered admin/users/index.html.erb within layouts/application (Duration: 16.4ms | Allocations: 4031)
+  Rendered layout layouts/application.html.erb (Duration: 912.6ms | Allocations: 31308)
+Completed 200 OK in 916ms (Views: 910.8ms | ActiveRecord: 2.8ms | Allocations: 32812)
+
+
+Started GET "/admin/users/new" for ::1 at 2021-07-02 17:44:22 +0300
+Processing by Admin::UsersController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/new.html.erb within layouts/application
+  Rendered admin/users/_form.html.erb (Duration: 85.2ms | Allocations: 3948)
+  Rendered admin/users/new.html.erb within layouts/application (Duration: 99.5ms | Allocations: 4264)
+  Rendered layout layouts/application.html.erb (Duration: 356.0ms | Allocations: 31519)
+Completed 200 OK in 370ms (Views: 358.3ms | ActiveRecord: 0.3ms | Allocations: 33084)
+
+
+Started POST "/admin/users" for ::1 at 2021-07-02 17:44:47 +0300
+Processing by Admin::UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"r9v+FJ4l4BYckFH+sX5zvORN7123lEd9CsgH0uu0B+4sfniTuVgv9YrWG09e6UVkyGTkMpOlbwe/vWKZ511TuA==", "user"=>{"name"=>"Peter", "email"=>"peter@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "admin"=>"true"}, "commit"=>"Submit"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/admin/users_controller.rb:15:in `create'
+  [1m[36mUser Create (41.9ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at", "admin") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Peter"], ["email", "peter@gmail.com"], ["password_digest", "$2a$12$Doep9qMCC6eeHSJnkjZeKeo2UVVADQJA9XAykqBA9RZPid4I9p/fK"], ["created_at", "2021-07-02 17:44:47.896576"], ["updated_at", "2021-07-02 17:44:47.896576"], ["admin", true]]
+  ↳ app/controllers/admin/users_controller.rb:15:in `create'
+  [1m[36mTRANSACTION (42.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/admin/users_controller.rb:15:in `create'
+Redirected to http://localhost:3000/admin/users.7
+Completed 302 Found in 521ms (ActiveRecord: 85.2ms | Allocations: 3259)
+
+
+Started GET "/admin/users.7" for ::1 at 2021-07-02 17:44:47 +0300
+Processing by Admin::UsersController#index as */*
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users"."id", "users"."name", "users"."email", "users"."admin" FROM "users" ORDER BY "users"."created_at" ASC[0m
+  ↳ app/views/admin/users/index.html.erb:20
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/views/admin/users/index.html.erb:26
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 7]]
+  ↳ app/views/admin/users/index.html.erb:26
+  Rendered admin/users/index.html.erb within layouts/application (Duration: 29.0ms | Allocations: 4903)
+  Rendered layout layouts/application.html.erb (Duration: 1044.9ms | Allocations: 32181)
+Completed 200 OK in 1054ms (Views: 1041.7ms | ActiveRecord: 4.6ms | Allocations: 33829)
+
+
+Started GET "/admin/users/7" for ::1 at 2021-07-02 17:44:58 +0300
+Processing by Admin::UsersController#show as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/helpers/sessions_helper.rb:3:in `current_user'
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/admin/users_controller.rb:59:in `set_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/show.html.erb within layouts/application
+  [1m[35m (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "tasks" WHERE "tasks"."user_id" = $1[0m  [["user_id", 7]]
+  ↳ app/views/admin/users/show.html.erb:19
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."user_id" = $1 LIMIT $2 OFFSET $3[0m  [["user_id", 7], ["LIMIT", 5], ["OFFSET", 0]]
+  ↳ app/views/admin/users/show.html.erb:46
+  Rendered admin/users/show.html.erb within layouts/application (Duration: 25.7ms | Allocations: 1270)
+  Rendered layout layouts/application.html.erb (Duration: 101.5ms | Allocations: 28534)
+Completed 200 OK in 124ms (Views: 100.4ms | ActiveRecord: 3.7ms | Allocations: 30536)
+
+

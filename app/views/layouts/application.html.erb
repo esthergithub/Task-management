@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Everyleaf</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width">
+    <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% flash.each do |key, value| %>
+    <%= content_tag(:div, value, class: "#{key}") %>
+    <% end %>
+    <% if logged_in? %>
+    <%= link_to "My Page", user_path(current_user.id) %>
+    <%= link_to "Logout", session_path(current_user.id), method: :delete %>
+    <%= link_to "My Tasks", tasks_path(current_user.id) %>
+      <% if current_user.admin? %>
+        <%= link_to "Management Page", admin_users_path(current_user.id)%>
+      <% end %>
+    <% else %>
+    <%= link_to "Sign up", new_user_path %>
+    <%= link_to "Login", new_session_path %>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

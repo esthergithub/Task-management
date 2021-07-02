@@ -1,0 +1,33 @@
+<h1 class = "center">List of Users</h1>
+<br>
+
+<%= link_to 'Create user', new_admin_user_path, class: "btn btn-info" %>
+<hr>
+
+<table class ="table table-striped">
+  <thead>
+    <tr>
+      <th>UserID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>User admin priviledges </th>
+      <th>Number of Tasks</th>
+      <th></th>
+      <th colspan="4"></th>
+   </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= link_to user.name, admin_user_path(user.id) %></td>
+      <td><%= user.email %></td>
+      <td><%= user.admin? ? "Yes":"No" %></td>
+      <td><%= user.tasks.count %></td>
+      <td><%= link_to 'Show', admin_user_path(user.id), class: "btn btn-outline-primary" %></td>
+      <td><%= link_to 'Edit', edit_admin_user_path(user.id), data: { confirm: 'Are you sure?' }, class: "btn btn-outline-success" %></td>
+      <td><%= button_to 'Delete', admin_user_path(user.id), data: { confirm: 'Are you sure?' }, :method=>:delete, :class=>:destroy %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

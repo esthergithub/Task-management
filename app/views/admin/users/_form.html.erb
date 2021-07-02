@@ -1,0 +1,23 @@
+<%= form_with(model: [:admin, @user], local: true, url: choose_new_or_edit) do |f| %>
+  <% if @user.errors.any? %>
+    <div class="bg-danger text-white">
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li>・<%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <br>
+
+  <div class="field">
+    <%= f.text_field :name, placeholder: 'name', class:"form-control"  %>
+    <%= f.email_field :email, placeholder: 'email', class:"form-control"  %>
+    <%= f.password_field :password, placeholder: 'password', class:"form-control"  %>
+    <%= f.password_field :password_confirmation, placeholder: 'password_confirmation', class:"form-control"  %>
+    <%= f.label :admin %>
+    <%= f.check_box :admin, {}, 'true', 'false' %>
+    <%= f.submit "Submit", class:"btn btn-primary" %>
+    <% end %>
+  </div>

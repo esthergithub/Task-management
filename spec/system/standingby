@@ -1,0 +1,31 @@
+describe '[Grouping of tests (tests related to ○○)]' do
+  context '[Grouping by conditions (when ○)]' do
+    before do
+      [Common preparations]
+    end
+    it '[Contents of the test (become 00)]' do
+      [Test processing (expected to become XX)]
+    end
+  end
+end
+describe '[Grouping of tests (tests related to ○○)]' do
+  context '[Grouping by conditions (when ○)]' do
+    before do
+      [Common preparations]
+    end
+    it '[Contents of the test (become 00)]' do
+      [Test processing (expected to become XX)]
+    end
+  end
+end
+
+before do
+  FactoryBot.create(:user, name: "Person", email: "person@gmail.com", password: "12345677", password_confirmation:"12345677")
+end
+
+context 'When the user tries to jump to the task list screen without logging in' do
+  it 'transition to the login screen' do
+    visit tasks_path
+
+  end
+end

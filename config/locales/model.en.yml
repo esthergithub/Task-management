@@ -1,0 +1,17 @@
+en:
+ activerecord:
+ models:
+ task: Task
+ user: user
+ attributes:
+ task:
+ title: title
+ content: content
+ user:
+ title: title
+ name: name
+ email: Email address
+ current_password: current password
+ password: password
+ password_confirmation: Confirmation password
+ remember_me: remember login

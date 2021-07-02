@@ -1,0 +1,26 @@
+ <% if @user.errors.any? %>
+ <div id="error_explanation">
+ <h2><%= pluralize(@user.errors.count, "error") %> prohibited this <%= @user.name %> from being saved:</h2>
+ <ul>
+ <% @user.errors.full_messages.each do |message| %>
+ <li><%= message %></li>
+ <% end %>
+ </ul>
+ </div>
+ <% end %>
+
+<div class="container">
+  <div class="right-column text-center">
+    <%= render 'register', user: @user %>
+    <p class="terms">By signing up, you agree to our <b>Terms, Data Policy</b> and <b>Cookies Policy</b></p>
+  </div>
+      <div class="right-colum-login text-center">
+        <p>Have and account? <%= link_to "Log In", new_session_path %></p>
+      </div>
+      <div class="right-colum-app text-center">
+        <p>Get the app.</p>
+      </div>
+      <div class="bottom-column text-center">
+
+      </div>
+    </div>

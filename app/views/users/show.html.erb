@@ -1,0 +1,81 @@
+<div class="container-profile">
+  <div class="col-lg-1">
+
+  </div>
+  <div class="col-lg-9">
+  <div class="profile">
+
+    <div class="profile-user-settings">
+      <ul>
+        <li><h1><%= @user.name %>_</h1></li>
+        <li><button class="btn profile-edit-btn"><%= link_to 'Edit Profile', edit_user_path(@user) %></button></li>
+        <li><i class="fa fa-cog" aria-hidden="true"></i></li>
+      </ul>
+    </div>
+    <div class="profile-stats">
+      <ul>
+        <li><span class="profile-stat-count">123 </span>posts</li>
+        <li><span class="profile-stat-count">123 </span>followers</li>
+        <li><span class="profile-stat-count">123 </span>following</li>
+      </ul>
+   </div>
+    <div class="profile-bio">
+      <ul>
+        <li><span class="profile-real-name"><%= @user.name %> Lorem ipsum dolor sit, amet consectetur adipisicing elit</span></li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</div>
+<h1><%= @user.name %>pages names</h1>
+<p>email address: <%= @user.email %></p>
+<%= link_to 'create_task', new_task_path %>
+<%= link_to 'back to', tasks_path %>
+<% @tasks.each do |task| %>
+  <ul class="tasklist">
+    <% @tasks.each do |task| %>
+    <%# <tr class="task_row"> %>
+      <li>
+        <p>
+          <span class="item_name">
+            task_name
+          </span>
+          <div class="item_name tasks-index_item_title" id=<%= "tasks-index_item_title-#{task.id}" %>>
+            <%= task.title %>
+          </div>
+        </p>
+      <p>
+        <span class="item_name">
+          content
+        </span>
+        <div class="item_name tasks-index_item_content" id=<%= "tasks-index_item_content-#{task.id}" %>>
+          <%= task.content %>
+        </div>
+      </p>
+      <p>
+        <span class="item_name">
+          registration_date
+        </span>
+        <div class="item_name tasks-index_item_created_at" id = <%= "tasks-index_item_created_at-#{task.id}" %>
+          <%= l task.created_at, format: :long %>
+        </div>
+      </p>
+      <p>
+        <span class="item_name">
+          end_date
+        </span>
+        <div class="item_name tasks-index_item_status" id=<%= "tasks-index_item_status-#{task.id}" %>
+          <%= task.status %>
+        </div>
+        </p>
+      <p>
+        <span class="item_name">
+          status
+        </span>
+    </li>
+  <% end %>
+</ul>
+<%end%>
+<nav class="navbar navbar-fixed-bottom">
+
+</nav>

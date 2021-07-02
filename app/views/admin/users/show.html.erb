@@ -1,0 +1,57 @@
+<h1 class = "center"><%= @user.name %>'s page</h1>
+<div class ="col-md-6">
+  <table class="user_show_table  clearfix">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <td><%= @user.id %></td>
+      </tr>
+      <tr>
+        <th>Username</th>
+        <td><%= @user.name%></td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td><%= @user.email %></td>
+      </tr>
+      <tr>
+        <th>Number of tasks</th>
+        <td><%= @user.tasks.count %></td>
+      </tr>
+      <tr>
+        <th>User admin priviledges</th>
+        <td><%= @user.admin? ? "Yes":"No" %></td>
+      </tr>
+      <tr>
+        <th> <%= link_to 'Return to User Management', admin_users_path %></th>
+      </tr>
+
+    </thead>
+  </table>
+</div>
+
+<hr>
+<div class ="text-right">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Deadline</th>
+      <th>Status</th>
+      <th>Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.content %></td>
+        <td><%= task.deadline %></td>
+        <td><%= task.status %></td>
+        <td><%= task.priority %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
